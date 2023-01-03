@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\China\\Documents\\SEGUNDO CUATRIMESTRE\\programacion II\\WebApiAutores\\WebApiAutores\\WebApiAutores.csproj": {}
+    "C:\\Users\\China\\Documents\\CursoWebApiUdemy\\WebApiAutores\\WebApiAutores\\WebApiAutores.csproj": {}
   },
   "projects": {
-    "C:\\Users\\China\\Documents\\SEGUNDO CUATRIMESTRE\\programacion II\\WebApiAutores\\WebApiAutores\\WebApiAutores.csproj": {
+    "C:\\Users\\China\\Documents\\CursoWebApiUdemy\\WebApiAutores\\WebApiAutores\\WebApiAutores.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\China\\Documents\\SEGUNDO CUATRIMESTRE\\programacion II\\WebApiAutores\\WebApiAutores\\WebApiAutores.csproj",
+        "projectUniqueName": "C:\\Users\\China\\Documents\\CursoWebApiUdemy\\WebApiAutores\\WebApiAutores\\WebApiAutores.csproj",
         "projectName": "WebApiAutores",
-        "projectPath": "C:\\Users\\China\\Documents\\SEGUNDO CUATRIMESTRE\\programacion II\\WebApiAutores\\WebApiAutores\\WebApiAutores.csproj",
+        "projectPath": "C:\\Users\\China\\Documents\\CursoWebApiUdemy\\WebApiAutores\\WebApiAutores\\WebApiAutores.csproj",
         "packagesPath": "C:\\Users\\China\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\China\\Documents\\SEGUNDO CUATRIMESTRE\\programacion II\\WebApiAutores\\WebApiAutores\\obj\\",
+        "outputPath": "C:\\Users\\China\\Documents\\CursoWebApiUdemy\\WebApiAutores\\WebApiAutores\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\China\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,24 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite": {
+              "target": "Package",
+              "version": "[7.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
