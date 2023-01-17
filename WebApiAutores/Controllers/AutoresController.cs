@@ -6,12 +6,12 @@ namespace WebApiAutores.Controllers
 {
     [ApiController]
     [Route("api/autores")] //RUTA == api/autores
-    public class AutoresController: ControllerBase //HERENCIA de una clase base, es la tipica para web api
+    public class AutoresController : ControllerBase //HERENCIA de una clase base, es la tipica para web api
     {
         private readonly ApplicationDbContext context;
         public AutoresController(ApplicationDbContext context)
         {
-           this.context=context;
+            this.context=context;
         }
 
         public ApplicationDbContext Context { get; }
@@ -27,45 +27,57 @@ namespace WebApiAutores.Controllers
         }
 
         //async por que vamos a devolver info de una base de datos,es buena practica
-        //
 
         //Debemos de diferenciar los empoint iguales
-        [HttpGet("primero")] //aca la ruta va a concatenar con primero api/autores/primero, sino tengo dos pedidos get con la misma ruta
-        public async Task<ActionResult<Autor>> PrimerAutor()
+        //aca la ruta va a concatenar con primero api/autores/primero,
+        //sino tengo dos pedidos get con la misma ruta
+
+
+        [HttpGet("primero")] ///api/autores/primero?nombre=agustina'
+        public async Task<ActionResult<Autor>> PrimerAutor([FromHeader] int miValor, [FromQuery] string nombre)
         {
-            return await context.Autores.FirstOrDefaultAsync(); 
-            //Obteniendo el primer registro de la tabla o nulo si no hay registro
+            return await context.Autores.FirstOrDefaultAsync();  //Obteniendo el primer registro de la tabla, o nulo si no hay registro
+
         }
 
-        [HttpGet("{id : int}")]
-        public async Task<ActionResult<Autor>> Get(int id)
+        //Aca no se necesita Async... 
+        [HttpGet("primero2")]
+        public ActionResult<Autor> PrimerAutor2()
+        {
+            return new Autor() { Nombre = "inventado" };
+
+        }
+
+        [HttpGet("{id:int}/{param2?}")] // ? me perimite poder mandar una variable vacia,
+                                          // o se le puede dar un valor por defecto siendo{param2=persona}
+        public async Task<ActionResult<Autor>> Get(int id, string param2)
         {
             var autor = await context.Autores.FirstOrDefaultAsync(x => x.Id == id);
-           //FirstOrDefaultAsync == Retorna el primer registro q tenga la caracteristica
-        if (autor == null)
-            {
-                return NotFound();  //devuelve un 404
-            }
-        return autor;
-        }
-
-        //Buscar un autor por su nombre
-        [HttpGet("{nombre}")]
-        public async Task<ActionResult<Autor>> Get(string nombre)
-        {
-            var autor = await context.Autores.FirstOrDefaultAsync(x => x.Nombre.Contains(nombre));
-            
+            //FirstOrDefaultAsync == Retorna el primer registro q tenga la caracteristica
             if (autor == null)
             {
-                return NotFound();  
+                return NotFound();  //devuelve un 404
             }
             return autor;
         }
 
+        //Buscar un autor por su nombre
+        [HttpGet("{nombre}")]
+        public async Task<ActionResult<Autor>> Get([FromRoute] string nombre)
+        {
+            var autor = await context.Autores.FirstOrDefaultAsync(x => x.Nombre.Contains(nombre));
+
+            if (autor == null)
+            {
+                return NotFound();
+            }
+            return autor;
+        }
+    
         [HttpPost] //LA RUTA ES: api/autores
         [HttpPost("agregar")] //LA RUTA ES: api/autores/agregar
         [HttpPost("/agregar")]//LA RUTA ES: agregar
-        public async Task<ActionResult> Post(Autor autor)
+        public async Task<ActionResult> Post([FromBody] Autor autor)
         {
             context.Add(autor);
             await context.SaveChangesAsync();
@@ -76,7 +88,7 @@ namespace WebApiAutores.Controllers
         [HttpPut("{id:int}")] //api/autores/n°
         public async Task<ActionResult> Put(Autor autor, int id)
         {
-            if(autor.Id != id)
+            if (autor.Id != id)
             {
                 return BadRequest("El ID del autor no conincide con el di del URL");
             }
@@ -96,7 +108,7 @@ namespace WebApiAutores.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var existe = await context.Autores.AnyAsync(x => x.Id == id);
-            if(!existe)
+            if (!existe)
             {
                 return NotFound();
             }
