@@ -28,6 +28,8 @@ namespace WebApiAutores.Controllers
 
         //async por que vamos a devolver info de una base de datos,es buena practica
         //
+
+        //Debemos de diferenciar los empoint iguales
         [HttpGet("primero")] //aca la ruta va a concatenar con primero api/autores/primero, sino tengo dos pedidos get con la misma ruta
         public async Task<ActionResult<Autor>> PrimerAutor()
         {
@@ -35,13 +37,42 @@ namespace WebApiAutores.Controllers
             //Obteniendo el primer registro de la tabla o nulo si no hay registro
         }
 
-        [HttpPost]
+        [HttpGet("{id : int}")]
+        public async Task<ActionResult<Autor>> Get(int id)
+        {
+            var autor = await context.Autores.FirstOrDefaultAsync(x => x.Id == id);
+           //FirstOrDefaultAsync == Retorna el primer registro q tenga la caracteristica
+        if (autor == null)
+            {
+                return NotFound();  //devuelve un 404
+            }
+        return autor;
+        }
+
+        //Buscar un autor por su nombre
+        [HttpGet("{nombre}")]
+        public async Task<ActionResult<Autor>> Get(string nombre)
+        {
+            var autor = await context.Autores.FirstOrDefaultAsync(x => x.Nombre.Contains(nombre));
+            
+            if (autor == null)
+            {
+                return NotFound();  
+            }
+            return autor;
+        }
+
+        [HttpPost] //LA RUTA ES: api/autores
+        [HttpPost("agregar")] //LA RUTA ES: api/autores/agregar
+        [HttpPost("/agregar")]//LA RUTA ES: agregar
         public async Task<ActionResult> Post(Autor autor)
         {
             context.Add(autor);
             await context.SaveChangesAsync();
             return Ok();
         }
+
+
         [HttpPut("{id:int}")] //api/autores/n°
         public async Task<ActionResult> Put(Autor autor, int id)
         {
