@@ -5,8 +5,8 @@ using WebApiAutores.Entidades;
 namespace WebApiAutores.Controllers
 {
     [ApiController]
-    [Route("api/autores")]
-    public class AutoresController: ControllerBase
+    [Route("api/autores")] //RUTA == api/autores
+    public class AutoresController: ControllerBase //HERENCIA de una clase base, es la tipica para web api
     {
         private readonly ApplicationDbContext context;
         public AutoresController(ApplicationDbContext context)
@@ -16,11 +16,25 @@ namespace WebApiAutores.Controllers
 
         public ApplicationDbContext Context { get; }
 
+        //ACCION== Metodo que se encuentra dentro del controlador
+        //          el cual se va a ejecutar en respuesta a un pedido Http realizada
+        //          a la ruta definida por el controlador (get/post)
+
         [HttpGet]
-        public async Task<ActionResult<List<Autor>>> Get()
+        public async Task<ActionResult<List<Autor>>> Get() //ACCIONES(ENDPONIT)metodo/funiocn
         {
             return await context.Autores.Include(x => x.Libros).ToListAsync();
         }
+
+        //async por que vamos a devolver info de una base de datos,es buena practica
+        //
+        [HttpGet("primero")] //aca la ruta va a concatenar con primero api/autores/primero, sino tengo dos pedidos get con la misma ruta
+        public async Task<ActionResult<Autor>> PrimerAutor()
+        {
+            return await context.Autores.FirstOrDefaultAsync(); 
+            //Obteniendo el primer registro de la tabla o nulo si no hay registro
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post(Autor autor)
         {
