@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiAutores.Entidades;
+using WebApiAutores.Servicios;
 
 namespace WebApiAutores.Controllers
 {
@@ -9,9 +10,11 @@ namespace WebApiAutores.Controllers
     public class AutoresController : ControllerBase //HERENCIA de una clase base, es la tipica para web api
     {
         private readonly ApplicationDbContext context;
-        public AutoresController(ApplicationDbContext context)
+        private readonly IServicio servicio;
+        public AutoresController(ApplicationDbContext context, IServicio servicio)
         {
             this.context=context;
+            this.servicio=servicio;
         }
 
         public ApplicationDbContext Context { get; }
@@ -23,6 +26,7 @@ namespace WebApiAutores.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Autor>>> Get() //ACCIONES(ENDPONIT)metodo/funiocn
         {
+            servicio.RealizarTarea();
             return await context.Autores.Include(x => x.Libros).ToListAsync();
         }
 
