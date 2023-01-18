@@ -24,14 +24,11 @@ namespace WebApiAutores
             services.AddDbContext<ApplicationDbContext>(options => 
             options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
 
-            services.AddSingleton<IServicio, ServicioA>();
+            services.AddTransient<IServicio, ServicioA>();
 
-            //DISTINTOS SERVICIOS:
-           // AddTransient == Agregar un transitorio, se nos va a dar una nueva instancia
-           // AddScope == siempre distinta instancia al distintos usuarios
-           // AdSingleton == siempre la misma instancia con distintos usuarios
-
-
+            services.AddTransient<ServicioTransient>();
+            services.AddSingleton<ServicioSingleton>();
+            services.AddScoped<ServicioScoped>();
 
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -39,6 +36,7 @@ namespace WebApiAutores
             services.AddSwaggerGen();
             
         }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
