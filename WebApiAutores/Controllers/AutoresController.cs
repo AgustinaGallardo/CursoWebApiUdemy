@@ -30,25 +30,17 @@ namespace WebApiAutores.Controllers
 
         public ApplicationDbContext Context { get; }
 
-        //ACCION== Metodo que se encuentra dentro del controlador
-        //          el cual se va a ejecutar en respuesta a un pedido Http realizada
-        //          a la ruta definida por el controlador (get/post)
 
         [HttpGet]
         public async Task<ActionResult<List<Autor>>> Get() //ACCIONES(ENDPONIT)metodo/funiocn
         {
+            logger.LogInformation("Estamos obteniendo los autores");
+            logger.LogWarning("Mensaje de prueba");
             servicio.RealizarTarea();
             return await context.Autores.Include(x => x.Libros).ToListAsync();
         }
 
-        //async por que vamos a devolver info de una base de datos,es buena practica
-
-        //Debemos de diferenciar los empoint iguales
-        //aca la ruta va a concatenar con primero api/autores/primero,
-        //sino tengo dos pedidos get con la misma ruta
-
-
-        [HttpGet("primero")] ///api/autores/primero?nombre=agustina'
+         [HttpGet("primero")] ///api/autores/primero?nombre=agustina'
         public async Task<ActionResult<Autor>> PrimerAutor([FromHeader] int miValor, [FromQuery] string nombre)
         {
             return await context.Autores.FirstOrDefaultAsync();  //Obteniendo el primer registro de la tabla, o nulo si no hay registro
